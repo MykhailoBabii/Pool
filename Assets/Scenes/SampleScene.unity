@@ -5709,6 +5709,9 @@ MonoBehaviour:
   _touchZoneLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  _minDragDistance: 91
+  _startPointDrag: {x: 0, y: 0}
+  _endPointDrag: {x: 0, y: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

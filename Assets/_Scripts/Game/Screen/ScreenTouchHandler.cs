@@ -15,16 +15,20 @@ namespace UI
 
         [Inject] private readonly IStateMachine<ApplicationStates> _applicationStateMachine;
         [SerializeField] private LayerMask _touchZoneLayerMask;
+        [SerializeField] private float _minDragDistance;
+        private Vector2 _startPointDrag;
+        private Vector2 _endPointDrag;
 
 
         public void OnDrag(PointerEventData eventData)
         {
+
             SetTouchFromRay(eventData.position);
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            
+            _startPointDrag = eventData.position;
         }
 
         private void SetTouchFromRay(Vector3 position)
@@ -41,6 +45,11 @@ namespace UI
         public void OnPointerUp(PointerEventData eventData)
         {
             if (CanTouch == false) return;
+            _endPointDrag = eventData.position;
+            var dragDistance = Vector2.Distance(_startPointDrag, _endPointDrag);
+            if(dragDistance < _minDragDistance) return;
+            Debug.Log(dragDistance);
+            
             _applicationStateMachine.SwitchToState(ApplicationStates.BallsMoving);
         }
     }
