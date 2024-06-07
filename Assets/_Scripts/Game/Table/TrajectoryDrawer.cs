@@ -14,7 +14,7 @@ public class TrajectoryDrawer : MonoBehaviour
 
     public void Show()
     {
-        DOVirtual.Float(0, _maxWidth, _animationTime, value => _lineRenderer.widthMultiplier = value);
+        _lineRenderer.widthMultiplier = _maxWidth;
     }
 
     public void Hide()

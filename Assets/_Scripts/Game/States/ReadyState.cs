@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Core.States;
@@ -30,11 +31,16 @@ namespace Game.States
 
         public override void Enter()
         {
+            _stickController.InitOnShowComplete(OnShowComplete);
             _stickController.ShowStick();
             _stickController.PrepareOnReady();
             _stickController.SetStartDrawLinePosition();
             _poolControllerBehaviour.TrajectoryDrawer.Show();
             _screenView.ShowLine(true);
+        }
+
+        private void OnShowComplete()
+        {
             _screenTouchHandler.CanTouch = true;
         }
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class StickControllerBehaviour : MonoBehaviour
 {
@@ -9,24 +10,25 @@ public class StickControllerBehaviour : MonoBehaviour
     [SerializeField] private float _animationTime;
     [SerializeField] private float _hightMovePosition;
     private Tweener _stickMoveAnimation;
+    private Action _onShowComplete;
 
     [ContextMenu("TestShow")]
     public void Show()
     {
-        _stickMoveAnimation.Kill();
+        DOTween.Kill(_stickMoveAnimation);
         _stickMoveAnimation = _rootTransform.transform.DOLocalMoveY(0, _animationTime);
         DOVirtual.Float(0, 1, _animationTime, value =>
         {
             var color = _meshRenderer.material.color;
             color.a = value;
             _meshRenderer.material.color = color;
-        });
+        }).OnComplete(() => _onShowComplete?.Invoke());
     }
 
     [ContextMenu("TestHide")]
     public void Hide()
     {
-        _stickMoveAnimation.Kill();
+        DOTween.Kill(_stickMoveAnimation);
         _stickMoveAnimation = _rootTransform.transform.DOLocalMoveY(_hightMovePosition, _animationTime);
         DOVirtual.Float(1, 0, _animationTime, value =>
         {
@@ -34,6 +36,11 @@ public class StickControllerBehaviour : MonoBehaviour
             color.a = value;
             _meshRenderer.material.color = color;
         });
+    }
+
+    public void InitOnShowComplete(Action action)
+    {
+        _onShowComplete = action;
     }
 
     public Quaternion SetCuePositionAndRotation(Vector3 ballPosition, Vector3 tableCenter)

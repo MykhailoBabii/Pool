@@ -1,3 +1,4 @@
+using System;
 using Core.Utilities;
 using DG.Tweening;
 using Game.Provider;
@@ -16,6 +17,7 @@ namespace Game.Stick
         void CalculateHitPower();
         void MakeStickDistanceAnimation();
         void SetStartDrawLinePosition();
+        void InitOnShowComplete(Action action);
     }
 
     public class StickController : IStickController
@@ -117,6 +119,11 @@ namespace Game.Stick
             var rotation = _poolControllerBehaviour.Stick.SetCuePositionAndRotationOpposite(ballPosition, _tuchPosition);
             _poolControllerBehaviour.TrajectoryDrawer.SetRotation(rotation);
             _poolControllerBehaviour.TrajectoryDrawer.DrawTrajectory();
+        }
+
+        public void InitOnShowComplete(Action action)
+        {
+            _poolControllerBehaviour.Stick.InitOnShowComplete(action);
         }
     }
 }
